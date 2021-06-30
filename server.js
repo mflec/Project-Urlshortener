@@ -10,9 +10,9 @@ const urlparser= require("url");
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
-mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, 
+useUnifiedTopology: true });
 
-useUnified
 
 const schema= new Schema({url:"string"})
 const Url= mongoose.model('Url', schema)
@@ -28,7 +28,7 @@ app.get('/', function(req, res) {
 
 // Your first API endpoint
 
-app.post('/api/shorturl/new', function(req, res) {
+app.post('/api/shorturl', function(req, res) {
 const bodyurl= req.body.url
 
 const somet = dns.lookup(urlparser.parse(bodyurl).hostname, 
