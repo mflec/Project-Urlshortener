@@ -12,6 +12,8 @@ const urlparser= require("url");
 const port = process.env.PORT || 3000;
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+useUnified
+
 const schema= new Schema({url:"string"})
 const Url= mongoose.model('Url', schema)
 
@@ -26,22 +28,39 @@ app.get('/', function(req, res) {
 
 // Your first API endpoint
 
-app.post('/apo/shorturl/new', async function(req, res) {
+app.post('/api/shorturl/new', function(req, res) {
 const bodyurl= req.body.url
 
 const somet = dns.lookup(urlparser.parse(bodyurl).hostname, 
 (error, adress)=> {
-if(!)
+if(!adress) {
+res.json({error: "Invalid URL"})
+} else {
+const url= new Url({url: bodyurl})
+url.save((err, data)=> {
+res.json({
+original_url: data.url,
+short_url: data.id
+})
 })
 
-const url= new Url({url: bodyurl})
-
-
-await url.save((err, data)=>{
-res.json({created: true})
+}
 })
 
 });
+
+app.get('/api/shorturl/:id', async function(req, res) {
+const id= req.params.id
+Url.findById(id, (err, data)=> {
+if(!data ) {
+res.json({error: "Invalid URL"})
+} else { 
+res.redirect(data.url)
+}
+})
+
+});
+
 
 app.get('/api/hello', function(req, res) {
   res.json({ greeting: 'hello API' });
