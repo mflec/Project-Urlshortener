@@ -2,9 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const bodyParser= require("body-parser")
-const mongoose= require("mongoose")
+const bodyParser= require("body-parser");
+const mongoose= require("mongoose");
 const { Schema } = mongoose;
+const dns = require("dns");
+const urlparser= require("url");
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -25,16 +27,20 @@ app.get('/', function(req, res) {
 // Your first API endpoint
 
 app.post('/apo/shorturl/new', async function(req, res) {
-try {
+const bodyurl= req.body.url
 
-await Url.create({url: "landon"}, (err, data)=>{
+const somet = dns.lookup(urlparser.parse(bodyurl).hostname, 
+(error, adress)=> {
+if(!)
+})
+
+const url= new Url({url: bodyurl})
+
+
+await url.save((err, data)=>{
 res.json({created: true})
 })
-res.json({ url: req.body.url });
 
-} catch(e) { 
-console.log(e)
-}
 });
 
 app.get('/api/hello', function(req, res) {
